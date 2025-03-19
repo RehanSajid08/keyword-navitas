@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Building, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const NavBar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -30,15 +30,11 @@ const NavBar = () => {
     >
       <div className="container max-w-7xl mx-auto flex items-center justify-between">
         <a href="/" className="flex items-center space-x-2">
-          <div className="bg-blue-600 text-white h-8 w-8 rounded flex items-center justify-center">
-            <Building size={18} />
-          </div>
-          <span className={cn(
-            "font-medium text-xl transition-opacity duration-300",
-            scrolled ? "opacity-100" : "opacity-90"
-          )}>
-            OfficeSpace
-          </span>
+          <img 
+            src="https://cdn-ilblgal.nitrocdn.com/LtOfWpqsvRVXueIPEGVTBaxpvBAGgdOw/assets/images/optimized/rev-8c34eb7/www.officespacesoftware.com/wp-content/uploads/oss-logo-top-nav-v1.png" 
+            alt="OfficeSpace Logo" 
+            className="h-8" 
+          />
         </a>
         
         <nav className="hidden md:flex items-center space-x-8">
