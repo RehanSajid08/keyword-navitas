@@ -1,0 +1,107 @@
+
+import { useState } from 'react';
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import LoadingSpinner from './LoadingSpinner';
+
+interface FormData {
+  keywords: string;
+  context: string;
+  author: string;
+}
+
+interface ContentResearchFormProps {
+  onSubmit: (data: FormData) => void;
+  isLoading: boolean;
+}
+
+const ContentResearchForm = ({ onSubmit, isLoading }: ContentResearchFormProps) => {
+  const [formData, setFormData] = useState<FormData>({
+    keywords: '',
+    context: '',
+    author: '',
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
+  return (
+    <div className="w-full">
+      <div className="glass-panel rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800">
+        <div className="p-6 md:p-8">
+          <h3 className="text-xl font-semibold mb-6">Research & Create Content</h3>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="keywords">Target Keywords</Label>
+              <Input
+                id="keywords"
+                name="keywords"
+                value={formData.keywords}
+                onChange={handleChange}
+                placeholder="Enter primary keywords (e.g., content marketing, SEO strategy)"
+                required
+                className="w-full"
+              />
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Separate multiple keywords with commas
+              </p>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="context">Content Context</Label>
+              <Textarea
+                id="context"
+                name="context"
+                value={formData.context}
+                onChange={handleChange}
+                placeholder="Provide context about your target audience, goals, and any specific requirements"
+                rows={4}
+                className="w-full resize-none"
+                required
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="author">Author (Optional)</Label>
+              <Input
+                id="author"
+                name="author"
+                value={formData.author}
+                onChange={handleChange}
+                placeholder="Who will be listed as the author of this content?"
+                className="w-full"
+              />
+            </div>
+            
+            <Button 
+              type="submit" 
+              disabled={isLoading}
+              className="w-full flex items-center justify-center"
+            >
+              {isLoading ? (
+                <>
+                  <LoadingSpinner size="sm" className="mr-2" /> 
+                  Generating Content...
+                </>
+              ) : (
+                "Generate Content"
+              )}
+            </Button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ContentResearchForm;
