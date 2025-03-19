@@ -13,7 +13,7 @@ const Index = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedContent, setGeneratedContent] = useState<ContentOutput | null>(null);
 
-  const handleFormSubmit = async (formData: { keywords: string; context: string; author: string }) => {
+  const handleFormSubmit = async (formData: { keywords: string; context: string; author: string; apiKey: string }) => {
     if (!formData.keywords.trim()) {
       toast.error("Please enter at least one keyword");
       return;

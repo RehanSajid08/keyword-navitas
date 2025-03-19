@@ -5,11 +5,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import LoadingSpinner from './LoadingSpinner';
+import { Lock } from 'lucide-react';
 
 interface FormData {
   keywords: string;
   context: string;
   author: string;
+  apiKey: string;
 }
 
 interface ContentResearchFormProps {
@@ -22,7 +24,9 @@ const ContentResearchForm = ({ onSubmit, isLoading }: ContentResearchFormProps) 
     keywords: '',
     context: '',
     author: '',
+    apiKey: '',
   });
+  const [showApiKey, setShowApiKey] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -81,6 +85,34 @@ const ContentResearchForm = ({ onSubmit, isLoading }: ContentResearchFormProps) 
                 placeholder="Who will be listed as the author of this content?"
                 className="w-full"
               />
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <Label htmlFor="apiKey">OpenAI API Key (Optional)</Label>
+                <button 
+                  type="button"
+                  className="text-xs text-primary hover:text-primary/80 flex items-center"
+                  onClick={() => setShowApiKey(!showApiKey)}
+                >
+                  {showApiKey ? 'Hide' : 'Show'} API Key
+                </button>
+              </div>
+              <div className="relative">
+                <Input
+                  id="apiKey"
+                  name="apiKey"
+                  type={showApiKey ? 'text' : 'password'}
+                  value={formData.apiKey}
+                  onChange={handleChange}
+                  placeholder="sk-..."
+                  className="w-full pr-10"
+                />
+                <Lock className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              </div>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                For better results, provide your OpenAI API key. If not provided, a mock service will be used instead.
+              </p>
             </div>
             
             <Button 
