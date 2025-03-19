@@ -17,7 +17,7 @@ const LoadingSpinner = ({ size = "md", className }: LoadingSpinnerProps) => {
   return (
     <div
       className={cn(
-        "inline-block animate-spin rounded-full border-primary border-b-transparent",
+        "inline-block animate-spin rounded-full border-blue-600 border-b-transparent",
         sizeClasses[size],
         className
       )}
