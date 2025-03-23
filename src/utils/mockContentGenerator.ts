@@ -9,11 +9,49 @@ interface ContentGenerationParams {
 }
 
 // This is a fallback mock service that simulates generating content
-const mockGenerateContent = (params: ContentGenerationParams): ContentOutput => {
+const mockGenerateContent = (params: ContentGenerationParams, showApiKeyNeeded: boolean = false): ContentOutput => {
   const keywords = params.keywords.split(',').map(k => k.trim());
   const mainKeyword = keywords[0];
   
-  // Mock response data
+  // Show a message if API key is needed
+  if (showApiKeyNeeded) {
+    return {
+      pillarContent: {
+        title: "OpenAI API Key Required",
+        content: "# OpenAI API Key Required\n\nTo generate high-quality, SEO-optimized content, you need to provide a valid OpenAI API key. Please enter your API key in the form and try again.\n\n## Getting an API Key\n\n1. Go to [OpenAI's platform](https://platform.openai.com/)\n2. Sign up or log in to your account\n3. Navigate to the API section\n4. Generate a new API key\n5. Copy the key and paste it in the API Key field in the form\n\n## Why We Need This\n\nAn API key is required to access OpenAI's powerful GPT-4 model, which generates the content for your SEO strategy. We don't store your API key - it's used only for this request."
+      },
+      supportingPages: [
+        {
+          title: "How to Get Started with OpenAI for Content Creation",
+          summary: "A guide to setting up and using OpenAI's API for content creation, including best practices and tips for optimal results.",
+        },
+        {
+          title: "Understanding API Usage and Billing",
+          summary: "Learn about OpenAI's pricing model, how API calls are billed, and strategies to optimize your usage for cost-effectiveness.",
+        },
+        {
+          title: "Security Best Practices for API Keys",
+          summary: "Important security considerations when working with API keys, including how to protect your credentials and manage access securely.",
+        }
+      ],
+      metaTags: {
+        title: "OpenAI API Key Required | Content Generation Tool",
+        description: "Learn how to set up and use your OpenAI API key with our content generation tool for SEO-optimized content creation.",
+        keywords: "OpenAI API, content generation, API key setup, GPT-4",
+      },
+      socialMedia: {
+        linkedin: [
+          "🔑 Using AI for content creation requires an API key. Learn how to set up your OpenAI API key and start generating high-quality, SEO-optimized content with our tool.",
+          
+          "⚠️ Security alert: When working with API keys, always follow best practices for credential management. Never share your keys or commit them to public repositories.",
+          
+          "💡 Did you know? Using an OpenAI API key gives you more control over the content generation process, allowing for customization and improved results tailored to your needs."
+        ],
+      },
+    };
+  }
+  
+  // Mock response data for regular content
   return {
     pillarContent: {
       title: `Complete Guide to ${mainKeyword}: Strategies, Tips, and Best Practices`,
@@ -55,11 +93,7 @@ export const generateContent = async (params: ContentGenerationParams): Promise<
   try {
     if (!params.apiKey) {
       console.log('OpenAI API key not provided, using mock data');
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(mockGenerateContent(params));
-        }, 1500);
-      });
+      return mockGenerateContent(params, true);
     }
     
     console.log('Generating content with OpenAI...');
@@ -251,10 +285,6 @@ export const generateContent = async (params: ContentGenerationParams): Promise<
   } catch (error) {
     console.error('Error generating content:', error);
     // Fallback to mock data if API fails
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockGenerateContent(params));
-      }, 1000);
-    });
+    return mockGenerateContent(params);
   }
 };
